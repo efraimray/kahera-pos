@@ -1,0 +1,14 @@
+{
+  "name": "Kahera POS",
+  "short_name": "Kahera",
+  "description": "Offline point-of-sale for Philippine cafés and karinderyas.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#eef2ee",
+  "theme_color": "#136a48",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

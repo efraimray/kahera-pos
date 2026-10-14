@@ -1,0 +1,17 @@
+{
+  "name": "kahera-pos",
+  "version": "1.0.0",
+  "description": "Offline-first point-of-sale screen for Philippine cafés and karinderyas with correct Senior/PWD discounts, cash change and shift reports.",
+  "private": true,
+  "scripts": {
+    "test": "node tests/money.test.js",
+    "build": "node scripts/build-demo.js",
+    "check": "node --check js/money.js && node --check js/store.js && node --check js/menu-sample.js && node --check js/app.js && node --check sw.js",
+    "serve": "npx --yes serve ."
+  },
+  "keywords": ["pos", "point-of-sale", "pwa", "philippines", "senior-citizen-discount", "vanilla-js", "offline"],
+  "author": "Efraim Ray (https://www.efraimray.com/)",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/EfraimRay/kahera-pos.git" },
+  "homepage": "https://efraimray.github.io/kahera-pos/"
+}

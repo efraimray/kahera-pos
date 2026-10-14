@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kahera POS</title>
+<meta name="description" content="Kahera is a free, offline-first point-of-sale screen for Philippine cafés and karinderyas with correct Senior/PWD discounts, cash change and shift reports.">
+<meta name="theme-color" content="#136a48">
+<!--BUILD:REPO-ONLY-->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<!--/BUILD:REPO-ONLY-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<!--APP-START-->
+<div class="app" id="kahera">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <rect width="40" height="40" rx="11" fill="var(--accent)"></rect>
+        <path d="M11 8h18v22l-3-2.2-3 2.2-3-2.2-3 2.2-3-2.2-3 2.2z" fill="var(--paper)"></path>
+        <path d="M14.5 14h11M14.5 18.5h7M14.5 23h11" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <div style="min-width:0">
+        <h1 class="brand-name">Kahera</h1>
+        <p class="brand-biz" data-k="biz">Kapehan sa Lantaw · Sample café</p>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections" data-k="tabs">
+      <button role="tab" id="tab-register" aria-controls="view-register" aria-selected="true" data-view="register">Register</button>
+      <button role="tab" id="tab-orders" aria-controls="view-orders" aria-selected="false" data-view="orders">Orders <span class="count" data-k="orderCount">0</span></button>
+      <button role="tab" id="tab-shift" aria-controls="view-shift" aria-selected="false" data-view="shift">Shift</button>
+      <button role="tab" id="tab-menu" aria-controls="view-menu" aria-selected="false" data-view="menu">Menu</button>
+      <button role="tab" id="tab-about" aria-controls="view-about" aria-selected="false" data-view="about">About</button>
+    </nav>
+    <div class="top-tools">
+      <span class="clock" data-k="clock">--:--</span>
+      <button type="button" class="icon-btn" data-k="theme" aria-label="Switch light or dark theme" title="Theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- REGISTER -->
+    <section id="view-register" class="view view-register" role="tabpanel" aria-labelledby="tab-register">
+      <div class="catalog">
+        <div class="catalog-tools">
+          <label class="search" for="k-search"><span class="sr-only">Search the menu</span>
+            <input id="k-search" type="search" placeholder="Search menu   ( press / )" autocomplete="off">
+          </label>
+          <div class="chips" data-k="cats" role="group" aria-label="Menu categories"></div>
+        </div>
+        <div class="grid" data-k="grid"></div>
+      </div>
+
+      <aside class="order panel" id="k-order" aria-label="Current order">
+        <div class="order-head">
+          <h2>Order <span class="mono" data-k="orderNo">K-0001</span></h2>
+          <div class="order-meta">
+            <div class="seg" role="radiogroup" aria-label="Order type" data-k="otype">
+              <button type="button" role="radio" aria-checked="true" data-v="dine">Dine-in</button>
+              <button type="button" role="radio" aria-checked="false" data-v="take">Take-out</button>
+            </div>
+            <label class="table-no" for="k-table" data-k="tableWrap">Table <input id="k-table" inputmode="numeric" maxlength="3" autocomplete="off"></label>
+          </div>
+        </div>
+
+        <ul class="lines" data-k="lines" aria-live="polite"></ul>
+
+        <details class="disc" data-k="discBox">
+          <summary>Senior / PWD discount <span class="disc-tag" data-k="discTag" hidden></span></summary>
+          <div class="disc-body">
+            <div class="seg" role="radiogroup" aria-label="Discount type" data-k="disc">
+              <button type="button" role="radio" aria-checked="true" data-v="none">None</button>
+              <button type="button" role="radio" aria-checked="false" data-v="senior">Senior</button>
+              <button type="button" role="radio" aria-checked="false" data-v="pwd">PWD</button>
+            </div>
+            <div class="disc-row">
+              <label>Diners
+                <span class="stepper"><button type="button" data-step="diners" data-d="-1" aria-label="Fewer diners">−</button><input id="k-diners" inputmode="numeric" aria-label="Number of diners"><button type="button" data-step="diners" data-d="1" aria-label="More diners">+</button></span>
+              </label>
+              <label>With ID
+                <span class="stepper"><button type="button" data-step="ids" data-d="-1" aria-label="Fewer ID holders">−</button><input id="k-ids" inputmode="numeric" aria-label="Number of senior or PWD ID holders"><button type="button" data-step="ids" data-d="1" aria-label="More ID holders">+</button></span>
+              </label>
+            </div>
+            <p class="hint" data-k="discHint">20% off each ID holder's equal share of the bill. VAT is removed from that share first when the store is VAT-registered.</p>
+          </div>
+        </details>
+
+        <dl class="totals" data-k="totals"></dl>
+
+        <div class="order-actions" data-k="cartActions">
+          <button type="button" class="btn ghost" data-k="clear">Clear</button>
+          <button type="button" class="btn primary big" data-k="charge">Charge</button>
+        </div>
+
+        <div class="pay" data-k="pay" hidden>
+          <h3>Payment</h3>
+          <div class="seg" role="radiogroup" aria-label="Payment method" data-k="method">
+            <button type="button" role="radio" aria-checked="true" data-v="cash">Cash</button>
+            <button type="button" role="radio" aria-checked="false" data-v="ewallet">E-wallet</button>
+            <button type="button" role="radio" aria-checked="false" data-v="card">Card</button>
+          </div>
+          <div data-k="cashBox" class="form-grid">
+            <label for="k-tendered">Cash received (₱)</label>
+            <input id="k-tendered" class="tender" inputmode="decimal" autocomplete="off" placeholder="0.00">
+            <div class="quick" data-k="quick" aria-label="Quick cash amounts"></div>
+            <p class="change" data-k="change" aria-live="polite"><span>Change</span><b>₱0.00</b></p>
+          </div>
+          <div data-k="refBox" class="form-grid" hidden>
+            <label for="k-ref">Reference no. (from the customer's confirmation)</label>
+            <input id="k-ref" autocomplete="off" maxlength="40" placeholder="e.g. 4012 883 1290">
+          </div>
+          <p class="err" data-k="payErr" role="alert"></p>
+          <div class="order-actions">
+            <button type="button" class="btn ghost" data-k="back">Back</button>
+            <button type="button" class="btn primary big" data-k="complete">Complete sale</button>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ORDERS -->
+    <section id="view-orders" class="view" role="tabpanel" aria-labelledby="tab-orders" hidden>
+      <div class="view-head">
+        <div><p class="eyebrow">This shift</p><h2>Orders</h2></div>
+        <p data-k="ordersNote"></p>
+      </div>
+      <div class="panel table-wrap" style="margin-top:12px">
+        <table class="data" data-k="ordersTable"></table>
+      </div>
+    </section>
+
+    <!-- SHIFT -->
+    <section id="view-shift" class="view" role="tabpanel" aria-labelledby="tab-shift" hidden>
+      <div class="view-head">
+        <div><p class="eyebrow">Shift report · not a BIR Z-reading</p><h2>Shift summary</h2></div>
+        <div class="actions-row" data-k="shiftActions">
+          <button type="button" class="btn small" data-k="copyCsv">Copy CSV</button>
+          <button type="button" class="btn small" data-k="dlCsv">Download CSV</button>
+          <button type="button" class="btn small danger" data-k="newShift">Start new shift</button>
+        </div>
+      </div>
+      <div class="kpis" data-k="kpis" style="margin-top:12px"></div>
+      <div class="shift-grid" style="margin-top:14px">
+        <div class="panel card-pad">
+          <h3>Sales by hour</h3>
+          <div class="bars" data-k="bars" role="img" aria-label="Net sales by hour"></div>
+          <div class="bar-labels" data-k="barLabels" aria-hidden="true"></div>
+          <h3 style="margin-top:6px">Payment mix</h3>
+          <div class="split" data-k="split"></div>
+        </div>
+        <div class="panel card-pad">
+          <h3>Top items</h3>
+          <div class="table-wrap"><table class="data" data-k="topItems"></table></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENU -->
+    <section id="view-menu" class="view" role="tabpanel" aria-labelledby="tab-menu" hidden>
+      <div class="view-head">
+        <div><p class="eyebrow">Saved in this browser</p><h2>Menu &amp; settings</h2></div>
+        <div class="actions-row" data-k="resetWrap"><button type="button" class="btn small danger" data-k="reset">Reset sample data</button></div>
+      </div>
+      <div class="menu-admin" style="margin-top:12px">
+        <div class="panel table-wrap">
+          <table class="data" data-k="menuTable"></table>
+        </div>
+        <div class="form-grid">
+          <form class="panel card-pad" data-k="settingsForm">
+            <h3>Store</h3>
+            <label for="k-biz">Business name<input id="k-biz" maxlength="60" autocomplete="organization"></label>
+            <label for="k-biznote">Subtitle<input id="k-biznote" maxlength="80"></label>
+            <label class="check" for="k-vat"><input type="checkbox" id="k-vat"> VAT-registered (prices include 12% VAT)</label>
+          </form>
+          <form class="panel card-pad" data-k="addForm">
+            <h3>Add item</h3>
+            <label for="k-newname">Name<input id="k-newname" maxlength="40" required placeholder="e.g. Ginataang Bilo-bilo"></label>
+            <label for="k-newcat">Category<select id="k-newcat" data-k="newCat"></select></label>
+            <label for="k-newprice">Price (₱, VAT-inclusive)<input id="k-newprice" inputmode="decimal" required placeholder="65.00"></label>
+            <p class="err" data-k="addErr" role="alert"></p>
+            <button class="btn primary" type="submit">Add to menu</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="view-about" class="view" role="tabpanel" aria-labelledby="tab-about" hidden>
+      <div class="about">
+        <div class="wide panel card-pad">
+          <p class="eyebrow">About this project · v1.0.0 · MIT</p>
+          <h2>Kahera: a counter-ready POS for Philippine cafés and karinderyas</h2>
+          <p class="lead">Small food businesses often total orders on a calculator and work out Senior and PWD discounts by hand, which is slow and easy to get wrong when VAT is involved. Kahera is a free point-of-sale screen that runs in any browser, works offline, and does the discount math correctly every time.</p>
+        </div>
+        <div class="panel card-pad">
+          <h3>Who it is for</h3>
+          <ul>
+            <li>Cafés, karinderyas, milk-tea stalls and canteens</li>
+            <li>School and cooperative canteens, LGU food courts</li>
+            <li>Pop-up stalls at bazaars and fiestas with one tablet</li>
+            <li>Developers who want a clean vanilla-JS POS to extend</li>
+          </ul>
+        </div>
+        <div class="panel card-pad">
+          <h3>Features</h3>
+          <ul>
+            <li>Tap-to-add menu tiles with search, categories and sold-out items</li>
+            <li>Senior/PWD discount pro-rated per diner, with VAT exemption</li>
+            <li>Cash change with quick-bill buttons; e-wallet and card reference numbers</li>
+            <li>Order slip, void with confirmation, shift report and CSV export</li>
+            <li>Menu editor, offline PWA, light and dark themes</li>
+          </ul>
+        </div>
+        <div class="panel card-pad">
+          <h3>Tech stack</h3>
+          <ul>
+            <li>Plain HTML, CSS and JavaScript. No framework, no build step</li>
+            <li><code>money.js</code>: pure functions in integer centavos, unit-tested in Node</li>
+            <li><code>localStorage</code> with an in-memory fallback</li>
+            <li>Service worker + web manifest for offline use and "Add to Home Screen"</li>
+          </ul>
+        </div>
+        <div class="panel card-pad">
+          <h3>Install and deploy</h3>
+<pre>git clone https://github.com/EfraimRay/kahera-pos.git
+cd kahera-pos
+npm test          # runs the money tests
+npx serve .       # or open index.html</pre>
+          <p>Deploy the folder as-is to GitHub Pages, Netlify, Vercel or Cloudflare Pages. No server or database needed.</p>
+        </div>
+        <div class="panel card-pad">
+          <h3>Client pitch</h3>
+          <p>Offer it as a set-up service: load the client's menu and prices, install it on their tablet as an app, and train the staff in 30 minutes. Add paid extras such as cloud sync across branches, inventory, or a kitchen display, or bundle it with a website.</p>
+        </div>
+        <div class="panel card-pad">
+          <h3>Source code</h3>
+          <p><a href="https://github.com/EfraimRay/kahera-pos" target="_blank" rel="noopener">github.com/EfraimRay/kahera-pos</a> · Built by <a href="https://www.efraimray.com/" target="_blank" rel="noopener">Efraim Ray</a>, Valencia City, Bukidnon.</p>
+          <p class="hint">The café, menu and orders are sample data. Order slips are not official receipts; a business issuing receipts needs a BIR-registered system. Confirm discount rules for your business type with your accountant.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="mbar" data-k="mbar" hidden>
+    <div class="m-sum"><small data-k="mItems">0 items</small><b data-k="mTotal">₱0.00</b></div>
+    <a class="btn primary" href="#k-order" data-k="mGo">Review order</a>
+  </div>
+
+  <dialog class="slip-dlg" data-k="slipDlg" aria-label="Order slip">
+    <div class="slip" data-k="slip"></div>
+    <div class="dlg-actions">
+      <button type="button" class="btn primary" data-k="slipClose">Done</button>
+    </div>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite" data-k="toast"></div>
+</div>
+<!--APP-END-->
+<script src="js/money.js"></script>
+<script src="js/store.js"></script>
+<script src="js/menu-sample.js"></script>
+<script src="js/app.js"></script>
+<!--BUILD:REPO-ONLY-->
+<script>
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    navigator.serviceWorker.register('sw.js').catch(function () { /* offline mode unavailable */ });
+  }
+</script>
+<!--/BUILD:REPO-ONLY-->
+</body>
+</html>
